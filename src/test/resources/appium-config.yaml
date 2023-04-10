@@ -1,0 +1,122 @@
+server: &default_server
+  host: 127.0.0.1
+  appium_path:
+  session_override: true
+  logs:
+    level: DEBUG
+    path: logs/appium-server.log
+    timestamp: true
+    local_timezone: true
+    debug_spacing: true
+
+servers:
+  android:
+    <<: *default_server
+    port: 4723
+    allow_insecure:
+      - adb_screen_streaming
+    android:
+      suppress_adb_kill: true
+  ios:
+    <<: *default_server
+    port: 4726
+    ios:
+      wda_port: 8100
+  browserstack:
+    protocol: HTTPS
+    cloud: BROWSERSTACK
+    user_name: ${env:CLOUD_USER}
+    password: ${env:CLOUD_KEY}
+
+device: &default_device
+  os: ANDROID
+  type: REAL
+  language: US
+  session_timeout: 120000
+  others:
+    clear_files: true
+    no_reset: false
+    full_reset: false
+    clear_logs: true
+  playback:
+    stream:
+      enabled: false
+      width: 700
+      height: 1024
+      quality: HIGH
+      bit_rate: 50
+    screenshot:
+      on_error: true
+    recording:
+      enabled: false
+      time_limit: 5
+      android:
+        size: 800x720
+      ios:
+        fps: 30
+    delay:
+      before_swipe: 200
+      after_swipe: 100
+      before_tap: 0
+      after_tap: 0
+      implicit: 1
+      explicit: 5
+
+devices:
+#  android:
+#    <<: *default_device
+#    name: Pixel_5_API
+#    version: 11.0
+#    automation: UIAUTOMATOR2
+#    type: SIMULATOR
+#    android:
+#      avd:
+#        name: Pixel_5_API
+#        launch_timeout: 60000
+#        ready_timeout: 60000
+#        args: -gpu swiftshader_indirect
+#      app:
+#        install_timeout: 60000
+#        type: HYBRID
+#        path: apps/android/saucedemo.apk
+#        wait_activity: com.swaglabsmobileapp.MainActivity
+#  android_bs:
+#    name: Samsung Galaxy S10
+#    automation: UIAUTOMATOR2
+#    cloud_capabilities:
+#      os_version: 9.0
+#      device: Samsung Galaxy S10
+#      app: AndroidApp
+#      project: Project Appium
+#      build: Build-1
+#      name: Test 1
+#      browserstack.appium_version: 1.20.2
+#    playback:
+#      screenshot:
+#        on_error: true
+#    android:
+#      app:
+#        ignore_unimportant_views: false
+#  ios_bs:
+#    name: iPhone 14 Pro
+#    os: IOS
+#    automation: XCUI
+#    cloud_capabilities:
+#      os_version: 14
+#      device: iPhone 14 Pro
+#      app: IOSApp
+#      project: Project Appium
+#      build: Build-1
+#      name: IOS_Test 1
+#      browserstack.appium_version: 1.20.2
+  ios:
+    <<: *default_device
+    name: iPhone 14 Pro
+    version: 16.2
+    automation: XCUI
+    type: SIMULATOR
+    os: IOS
+    ios:
+      app:
+        path: apps/ios/saucedemo.zip
+        type: HYBRID
